@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign up — ApproTrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<script src="auth.js"></script>
+<script>
+  if (window.ApproAuth && window.ApproAuth.getSession()) {
+    window.location.replace('dashboard.html');
+  }
+</script>
+
+<div class="view auth-view active" id="view-signup" style="display: flex;">
+  <aside class="auth-side">
+    <div class="auth-side-inner">
+      <div class="landing-logo" data-go="landing">
+        <div class="logo-mark">A</div>
+        ApproTrack
+      </div>
+      <h2>Start in 90 seconds.<br/>Run your first approval.</h2>
+      <p>Sign up free, set up your first project, and invite your client to follow along — all today.</p>
+
+      <div class="auth-side-quote">
+        <div class="auth-side-quote-text">"My clients used to call every other day asking for updates. Now they just check the portal. Game changer."</div>
+        <div class="auth-side-quote-attr">
+          <div class="auth-side-avatar">KO</div>
+          Kunle Ogunbiyi · NIA Registered, Abuja
+        </div>
+      </div>
+    </div>
+    <div class="auth-side-foot">© 2026 ApproTrack · Lagos, Nigeria</div>
+  </aside>
+
+  <div class="auth-form-side">
+    <div class="auth-form-card">
+      <button class="auth-back" data-go="landing">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+
+      <h3>Create your account</h3>
+      <p class="subtitle">No credit card required to start.</p>
+
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" id="signupName" placeholder="e.g. Tunde Adebayo" />
+      </div>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="signupEmail" placeholder="you@firm.ng" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signupPass" placeholder="At least 8 characters" />
+      </div>
+
+      <label style="font-size: 12px; font-weight: 500; color: var(--text-2); display: block; margin-bottom: 8px; margin-top: 6px;">Choose your plan</label>
+      <div class="plan-pick" id="planPick">
+        <div class="plan-option selected" data-plan="free">
+          <div class="plan-option-name">Free <span class="plan-option-price">₦0</span></div>
+          <div class="plan-option-feat">2 active projects</div>
+        </div>
+        <div class="plan-option" data-plan="pro">
+          <div class="plan-option-name">Pro <span class="plan-option-price">₦18k <span class="small">/mo</span></span></div>
+          <div class="plan-option-feat">Unlimited projects</div>
+        </div>
+      </div>
+
+      <div style="font-size: 11px; color: var(--text-3); margin-top: -8px;">
+        By signing up, you agree to our Terms of Service and Privacy Policy.
+      </div>
+
+      <div class="auth-actions">
+        <button class="btn-cta-primary" id="doSignup">
+          Create account
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="auth-switch">
+        Already have an account? <a data-go="login">Log in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-go]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = el.dataset.go;
+      if (t === 'landing')     window.location.href = 'index.html';
+      else if (t === 'login')  window.location.href = 'login.html';
+      else if (t === 'signup') window.location.reload();
+    });
+  });
+
+  function toast(msg, type, detail) {
+    var c = document.getElementById('toastContainer');
+    if (!c) return;
+    var t = document.createElement('div');
+    t.className = 'toast ' + (type || 'success');
+    var iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    if (type === 'error') iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    if (type === 'info')  iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+    if (type === 'warn')  iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    t.innerHTML = '<div class="toast-icon">' + iconSvg + '</div><div class="toast-text"><strong>' +
+      msg + '</strong>' + (detail ? '<small>' + detail + '</small>' : '') + '</div>' +
+      '<button class="toast-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+    c.appendChild(t);
+    var rm = function () { t.classList.add('fade'); setTimeout(function () { t.remove(); }, 250); };
+    t.querySelector('.toast-close').addEventListener('click', rm);
+    setTimeout(rm, 4200);
+  }
+
+  try {
+    var pp = sessionStorage.getItem('approtrack_pending_plan');
+    if (pp) {
+      document.querySelectorAll('#planPick .plan-option').forEach(function (o) {
+        o.classList.toggle('selected', o.dataset.plan === pp);
+      });
+      sessionStorage.removeItem('approtrack_pending_plan');
+    }
+  } catch (e) {}
+
+  document.querySelectorAll('#planPick .plan-option').forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      document.querySelectorAll('#planPick .plan-option').forEach(function (o) {
+        o.classList.remove('selected');
+      });
+      opt.classList.add('selected');
+    });
+  });
+
+  function submit() {
+    var name  = document.getElementById('signupName').value.trim();
+    var email = document.getElementById('signupEmail').value.trim();
+    var pass  = document.getElementById('signupPass').value;
+    var sel   = document.querySelector('#planPick .plan-option.selected');
+    var plan  = sel ? sel.dataset.plan : 'free';
+    var res = window.ApproAuth.attemptSignup(name, email, pass, plan);
+    if (!res.ok) { toast(res.message || 'Signup failed', 'error'); return; }
+    try { sessionStorage.removeItem('approtrack_welcomed'); } catch (e) {}
+    window.location.href = 'dashboard.html';
+  }
+
+  var doSignup = document.getElementById('doSignup');
+  if (doSignup) doSignup.addEventListener('click', submit);
+  ['signupName', 'signupEmail', 'signupPass'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+  });
+})();
+</script>
+</body>
+</html>

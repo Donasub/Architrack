@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — ApproTrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<script src="auth.js"></script>
+<script>
+  if (window.ApproAuth && window.ApproAuth.getSession()) {
+    window.location.replace('dashboard.html');
+  }
+</script>
+
+<div class="view auth-view active" id="view-login" style="display: flex;">
+  <aside class="auth-side">
+    <div class="auth-side-inner">
+      <div class="landing-logo" data-go="landing">
+        <div class="logo-mark">A</div>
+        ApproTrack
+      </div>
+      <h2>Welcome back.<br/>Pick up where you left off.</h2>
+      <p>Your projects, documents, and client updates are right where you left them.</p>
+
+      <div class="auth-side-quote">
+        <div class="auth-side-quote-text">"ApproTrack cut our time-to-permit by 11 days. The client portal alone is worth the subscription."</div>
+        <div class="auth-side-quote-attr">
+          <div class="auth-side-avatar">FA</div>
+          Funmi Adekunle, Principal Architect · Lagos
+        </div>
+      </div>
+    </div>
+    <div class="auth-side-foot">© 2026 ApproTrack · Lagos, Nigeria</div>
+  </aside>
+
+  <div class="auth-form-side">
+    <div class="auth-form-card">
+      <button class="auth-back" data-go="landing">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+
+      <h3>Log in</h3>
+      <p class="subtitle">Welcome back — let's get you to your projects.</p>
+
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="loginEmail" placeholder="you@firm.ng" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••" />
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-top: -4px;">
+        <label style="display: flex; align-items: center; gap: 6px; color: var(--text-2); cursor: pointer;">
+          <input type="checkbox" checked /> Remember me
+        </label>
+        <a style="color: var(--accent); cursor: pointer; font-weight: 500;" id="forgotPassword">Forgot password?</a>
+      </div>
+
+      <div class="auth-actions">
+        <button class="btn-cta-primary" id="doLogin">
+          Log in
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="auth-switch">
+        Don't have an account? <a data-go="signup">Sign up free</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-go]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = el.dataset.go;
+      if (t === 'landing')      window.location.href = 'index.html';
+      else if (t === 'signup')  window.location.href = 'signup.html';
+      else if (t === 'login')   window.location.reload();
+    });
+  });
+
+  function toast(msg, type, detail) {
+    var c = document.getElementById('toastContainer');
+    if (!c) return;
+    var t = document.createElement('div');
+    t.className = 'toast ' + (type || 'success');
+    var iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    if (type === 'error') iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    if (type === 'info')  iconSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+    t.innerHTML = '<div class="toast-icon">' + iconSvg + '</div><div class="toast-text"><strong>' +
+      msg + '</strong>' + (detail ? '<small>' + detail + '</small>' : '') + '</div>' +
+      '<button class="toast-close" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+    c.appendChild(t);
+    var rm = function () { t.classList.add('fade'); setTimeout(function () { t.remove(); }, 250); };
+    t.querySelector('.toast-close').addEventListener('click', rm);
+    setTimeout(rm, 4200);
+  }
+
+  // Insert a demo-credentials helper box right after the subtitle
+  var demoBox = document.createElement('div');
+  demoBox.style.cssText = 'margin: 12px 0 18px; padding: 14px 16px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 10px; font-size: 12px; color: var(--text-2); line-height: 1.55;';
+  demoBox.innerHTML =
+    '<div style="font-weight: 600; color: var(--text); margin-bottom: 6px; font-size: 13px;">' +
+    '🎯 Demo credentials</div>' +
+    '<div>Email: <strong style="font-family: \'JetBrains Mono\', monospace;">demo@approtrack.ng</strong></div>' +
+    '<div>Password: <strong style="font-family: \'JetBrains Mono\', monospace;">demo1234</strong></div>' +
+    '<button id="useDemoBtn" type="button" style="margin-top: 10px; padding: 6px 12px; border: 1px solid var(--accent); background: #fff; color: var(--accent); border-radius: 6px; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;">Use demo credentials</button>';
+  var subtitle = document.querySelector('.auth-form-card .subtitle');
+  if (subtitle && subtitle.parentNode) {
+    subtitle.parentNode.insertBefore(demoBox, subtitle.nextSibling);
+  }
+  var useDemoBtn = document.getElementById('useDemoBtn');
+  if (useDemoBtn) useDemoBtn.addEventListener('click', function () {
+    document.getElementById('loginEmail').value = window.ApproAuth.DEMO_EMAIL;
+    document.getElementById('loginPass').value  = window.ApproAuth.DEMO_PASS;
+  });
+
+  function submit() {
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass  = document.getElementById('loginPass').value;
+    var res = window.ApproAuth.attemptLogin(email, pass);
+    if (!res.ok) { toast(res.message || 'Login failed', 'error'); return; }
+    try { sessionStorage.removeItem('approtrack_welcomed'); } catch (e) {}
+    window.location.href = 'dashboard.html';
+  }
+  var doLogin = document.getElementById('doLogin');
+  if (doLogin) doLogin.addEventListener('click', submit);
+  ['loginEmail', 'loginPass'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+  });
+
+  var fp = document.getElementById('forgotPassword');
+  if (fp) fp.addEventListener('click', function () {
+    toast('Reset link sent', 'info', 'Check your email for instructions');
+  });
+})();
+</script>
+</body>
+</html>

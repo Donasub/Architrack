@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports — ApproTrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="reports">
+<script src="auth.js"></script>
+<script>
+  // Guard: redirect to login.html if not authenticated
+  if (!window.ApproAuth || !window.ApproAuth.requireAuth()) { /* redirected */ }
+</script>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <a class="logo-mark" id="logoMark" href="dashboard.html" title="ApproTrack — go to dashboard" style="text-decoration: none;">A</a>
+    <nav class="nav">
+      <a class="nav-item" href="dashboard.html" data-page="dashboard" title="Dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      </a>
+      <a class="nav-item" href="projects.html" data-page="projects" title="Projects">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </a>
+      <a class="nav-item" href="documents.html" data-page="documents" title="Documents">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </a>
+      <a class="nav-item" href="clients.html" data-page="clients" title="Clients">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </a>
+      <a class="nav-item" href="reports.html" data-page="reports" title="Reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a class="nav-item" href="settings.html" data-page="settings" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </a>
+      <div class="has-dropdown">
+        <div class="avatar-sm" id="avatarBtn" title="Tunde Adebayo">TA</div>
+        <div class="dropdown profile-dropdown" id="profileDropdown">
+          <div class="dropdown-section-title">Tunde Adebayo · NIA</div>
+          <button class="dropdown-item" data-action="profile-settings">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            My profile
+          </button>
+          <button class="dropdown-item" data-action="account-billing">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+            Billing &amp; plan
+          </button>
+          <button class="dropdown-item" data-action="open-settings">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></span>
+            Workspace settings
+          </button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" data-action="help">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            Help &amp; support
+          </button>
+          <button class="dropdown-item danger" data-action="signout">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+            Sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="has-dropdown">
+        <div class="project-switcher" id="projectSwitcher">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3);" id="projectSwitcherId">LAG-2025-04</span>
+          <span id="projectSwitcherName">Lekki Phase II Residence</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="dropdown project-dropdown" id="projectDropdown">
+          <div class="dropdown-section-title">Switch project</div>
+          <div id="projectDropdownList"></div>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" data-action="new-project-from-switcher">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            New project
+          </button>
+          <button class="dropdown-item" data-action="view-all-projects">
+            <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+            View all projects
+          </button>
+        </div>
+      </div>
+      <div class="breadcrumb" id="breadcrumb">
+        <a href="projects.html" data-page="projects" style="cursor: pointer; color: inherit; text-decoration: none;">Projects</a>
+        <span class="breadcrumb-sep">/</span>
+        <strong id="breadcrumbCurrent">Lekki Phase II Residence</strong>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="search-wrap">
+        <input class="search" id="searchInput" placeholder="Search projects, documents, clients…" />
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <div class="view-toggle">
+        <button class="active" id="archViewBtn"><span class="dot"></span> Architect view</button>
+        <button id="clientViewBtn">Client view</button>
+      </div>
+      <div class="tier-badge free" id="tierBadge" title="Click to manage plan">
+        <span class="tier-dot"></span>
+        <span id="tierLabel">Free</span>
+      </div>
+      <div class="has-dropdown">
+        <button class="icon-btn" title="Notifications" id="notifBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge" id="notifBadge"></span>
+        </button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-head">
+            <h4>Notifications</h4>
+            <button class="notif-mark" id="markAllRead">Mark all as read</button>
+          </div>
+          <div class="notif-list" id="notifList"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ============ DASHBOARD PAGE ============ -->
+
+      <div class="page active" id="page-reports">
+        <div class="page-head">
+          <div>
+            <h1>Reports</h1>
+            <p class="page-sub">Generate, download, and share approval-cycle reports.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" data-action="generate-report">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Generate report
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-label">Avg time to approval</div>
+            <div class="stat-value">31 days</div>
+            <div class="stat-trend up">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              4 days faster than avg
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Approval rate</div>
+            <div class="stat-value">87%</div>
+            <div class="stat-trend">First submission</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Documents filed</div>
+            <div class="stat-value">142</div>
+            <div class="stat-trend">Across 12 projects</div>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-row list-head reports-grid">
+            <div>Report</div>
+            <div>Period</div>
+            <div>Generated</div>
+            <div></div>
+          </div>
+          <div id="reportsListBody"></div>
+        </div>
+      </div><!-- /page-reports -->
+
+</div>
+  </main>
+</div>
+
+
+<!-- ============ NEW PROJECT MODAL ============ -->
+<div class="modal-backdrop" id="newProjectModal">
+  <div class="modal">
+    <h3>Start a new project</h3>
+    <p>Create a fresh approval-tracking workspace for your client.</p>
+
+    <div class="field">
+      <label>Project name</label>
+      <input type="text" id="npName" placeholder="e.g. Victoria Island Office Tower" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Client name</label>
+        <input type="text" id="npClient" placeholder="e.g. Mrs. Adaeze Eze" />
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input type="text" id="npLocation" placeholder="e.g. Ikoyi, Lagos" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>State</label>
+        <select id="npState">
+          <option>Lagos State</option>
+          <option>Federal Capital Territory</option>
+          <option>Rivers State</option>
+          <option>Kano State</option>
+          <option>Oyo State</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Filing agency</label>
+        <select id="npAgency">
+          <option>LASBCA</option>
+          <option>FCDA</option>
+          <option>RSMURD</option>
+          <option>KANUPDA</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" data-close-modal="newProjectModal">Cancel</button>
+      <button class="btn btn-primary" id="confirmNewProject">
+        Create project
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NEW CLIENT MODAL ============ -->
+<div class="modal-backdrop" id="newClientModal">
+  <div class="modal">
+    <h3>Add a new client</h3>
+    <p>Add their details so they can be linked to a project.</p>
+    <div class="field">
+      <label>Full name</label>
+      <input type="text" id="ncName" placeholder="e.g. Mrs. Adaeze Eze" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="ncEmail" placeholder="adaeze@…" />
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="tel" id="ncPhone" placeholder="+234…" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" data-close-modal="newClientModal">Cancel</button>
+      <button class="btn btn-primary" id="confirmNewClient">Add client</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DOCUMENT PREVIEW MODAL ============ -->
+<div class="modal-backdrop" id="docPreviewModal">
+  <div class="modal doc-preview-modal">
+    <div class="doc-preview-head">
+      <div class="doc-icon" id="dpIcon">PDF</div>
+      <div class="doc-preview-meta">
+        <div class="doc-preview-title" id="dpTitle">Document</div>
+        <div class="doc-preview-info" id="dpInfo">— · —</div>
+      </div>
+      <span class="status-badge" id="dpStatus"><span class="sb-dot"></span> Status</span>
+    </div>
+    <div class="doc-preview-body">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <strong>Preview unavailable</strong>
+      Use the actions below to download or share the original file.
+    </div>
+    <div class="modal-actions">
+      <button class="btn" data-close-modal="docPreviewModal">Close</button>
+      <button class="btn" data-action="download-doc">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </button>
+      <button class="btn btn-primary" data-action="share-doc">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share with reviewer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal" style="width: 420px;">
+    <h3 id="confirmTitle">Confirm</h3>
+    <p id="confirmMsg">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="btn" data-close-modal="confirmModal">Cancel</button>
+      <button class="btn btn-primary" id="confirmYes">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ UPGRADE MODAL ============ -->
+<div class="modal-backdrop" id="upgradeModal">
+  <div class="modal upgrade-modal">
+    <div class="upgrade-modal-head">
+      <div class="upgrade-modal-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div>
+        <h3 id="upgradeTitle">Upgrade to Professional</h3>
+        <p id="upgradeMsg" style="margin: 0;">You've reached the 2-project limit on the Free plan.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-price-row" style="margin-top: 20px;">
+      <div class="upgrade-price">₦18,000</div>
+      <div class="upgrade-period">/ month · cancel anytime</div>
+    </div>
+
+    <div class="upgrade-features">
+      <div class="upgrade-feat">
+        <span class="check-mini"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span><strong>Unlimited active projects</strong> — never hit a cap again</span>
+      </div>
+      <div class="upgrade-feat">
+        <span class="check-mini"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>All states &amp; agencies (LASBCA, FCDA, RSMURD, KANUPDA)</span>
+      </div>
+      <div class="upgrade-feat">
+        <span class="check-mini"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>Approval reports &amp; full audit trails</span>
+      </div>
+      <div class="upgrade-feat">
+        <span class="check-mini"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>Custom branding on the client portal</span>
+      </div>
+      <div class="upgrade-feat">
+        <span class="check-mini"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>Priority email support</span>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" data-close-modal="upgradeModal">Maybe later</button>
+      <button class="btn btn-primary" id="confirmUpgrade">
+        Upgrade to Pro · ₦18,000/mo
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST CONTAINER ============ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============ UPDATE STATUS MODAL ============ -->
+<div class="modal-backdrop" id="updateModal">
+  <div class="modal">
+    <h3>Update project status</h3>
+    <p>Choose the new stage for <strong>Lekki Phase II Residence</strong>. Your client will see this update on their portal immediately.</p>
+
+    <div class="stage-options">
+      <div class="stage-option" data-stage="0">
+        <div class="stage-radio"></div>
+        <div class="stage-info">
+          <div class="stage-info-name">Drafting / Upload</div>
+          <div class="stage-info-desc">Preparing drawings &amp; documents</div>
+        </div>
+      </div>
+      <div class="stage-option" data-stage="1">
+        <div class="stage-radio"></div>
+        <div class="stage-info">
+          <div class="stage-info-name">Submitted to Government</div>
+          <div class="stage-info-desc">Filed at LASBCA / state agency</div>
+        </div>
+      </div>
+      <div class="stage-option selected" data-stage="2">
+        <div class="stage-radio"></div>
+        <div class="stage-info">
+          <div class="stage-info-name">Under Review</div>
+          <div class="stage-info-desc">Currently with assigned reviewer</div>
+        </div>
+      </div>
+      <div class="stage-option" data-stage="3">
+        <div class="stage-radio"></div>
+        <div class="stage-info">
+          <div class="stage-info-name">Approved</div>
+          <div class="stage-info-desc">Permit issued, project cleared</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" id="cancelUpdate">Cancel</button>
+      <button class="btn btn-primary" id="confirmUpdate">
+        Confirm update
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CLIENT MODE OVERLAY ============ -->
+<div class="client-mode" id="clientMode">
+  <div class="client-mode-bar">
+    <div class="client-mode-bar-left">
+      <div class="logo-mark" style="margin: 0; width: 32px; height: 32px; font-size: 14px; border-radius: 8px;">A</div>
+      <div class="client-mode-bar-text">
+        <strong>You're previewing the client view.</strong><br>
+        <small>This is what Mr. Chinedu Okafor sees when he logs in.</small>
+      </div>
+    </div>
+    <button class="btn-ghost-light" id="exitClientMode">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Exit preview
+    </button>
+  </div>
+
+  <div class="client-mode-content">
+    <p class="client-greeting">Hello Mr. Chinedu,</p>
+    <h1>Your <em>Lekki Phase II Residence</em> approval is currently with the Lagos State reviewer.</h1>
+
+    <div class="client-card">
+      <div class="client-status-big">
+        <div class="client-status-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="client-status-text-block">
+          <div class="client-status-label">CURRENT STAGE</div>
+          <div class="client-status-value">Under Review</div>
+          <div class="client-eta">Expected outcome: <strong>around 2 April 2026</strong> (≈ 28 days from submission)</div>
+        </div>
+      </div>
+
+      <div class="client-stepper">
+        <div class="client-step done">
+          <div class="client-step-dot">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="client-step-label">Drawings prepared</div>
+        </div>
+        <div class="client-step done">
+          <div class="client-step-dot">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="client-step-label">Filed with Lagos State</div>
+        </div>
+        <div class="client-step current">
+          <div class="client-step-dot">3</div>
+          <div class="client-step-label">Reviewer reviewing</div>
+        </div>
+        <div class="client-step">
+          <div class="client-step-dot">4</div>
+          <div class="client-step-label">Permit issued</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="client-card" style="padding: 18px 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+        <h4 style="font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600;">Recent updates</h4>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-3);">3 UPDATES</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="client-update-row">
+          <div class="client-update-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="client-update-content">
+            <div class="client-update-time">2 DAYS AGO · TUE</div>
+            <div class="client-update-msg"><strong>Reviewer assigned.</strong> Lagos State has officially received your file and assigned a reviewer. We'll update you as soon as we hear back from them.</div>
+          </div>
+        </div>
+        <div class="client-update-row">
+          <div class="client-update-icon" style="background: var(--emerald-dim); color: var(--emerald-deep);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="client-update-content">
+            <div class="client-update-time">14 DAYS AGO · 03 FEB</div>
+            <div class="client-update-msg"><strong>Submitted to Lagos State.</strong> All required drawings and documents have been filed at LASBCA. Tracking number issued.</div>
+          </div>
+        </div>
+        <div class="client-update-row">
+          <div class="client-update-icon" style="background: var(--bg); color: var(--text-2);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="client-update-content">
+            <div class="client-update-time">18 DAYS AGO · 28 JAN</div>
+            <div class="client-update-msg"><strong>Drawings finalised.</strong> All architectural drawings and supporting documents completed and ready for submission.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-card">
+      <div class="arch-avatar">TA</div>
+      <div class="arch-info">
+        <div class="arch-label">YOUR ARCHITECT</div>
+        <div class="arch-name">Tunde Adebayo · NIA Registered</div>
+      </div>
+      <button class="arch-call-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+        Call architect
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>
