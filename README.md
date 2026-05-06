@@ -1,163 +1,53 @@
-# Architrack
-Architrack Building approval management for Nigerian architects. Architrack helps architects track, organise, and communicate building permit approvals across Nigerian states, replacing WhatsApp threads and paper checklists with a clean, centralised dashboard.
-# Architrack
+# ApproTrack — multi-page build
 
-**Building approval management for Nigerian architects.**
+The original `approtrack_full.html` was a single-page app where all views (landing, login, signup, dashboard, projects, etc.) lived in one file and were swapped via JavaScript. This build splits it into **9 real HTML pages** that share `styles.css`, `auth.js`, and `app.js`.
 
-Architrack helps architects track, organise, and communicate building permit approvals across Nigerian states — replacing WhatsApp threads and paper checklists with a clean, centralised dashboard.
+## Demo credentials
 
----
+When you open `login.html` you'll see a highlighted box with the demo credentials and a "Use demo credentials" button that fills them in for you:
 
-## The Problem
+- **Email:** `demo@approtrack.ng`
+- **Password:** `demo1234`
 
-Getting a building approved in Nigeria is slow, opaque, and fragmented. Requirements differ by state. There's no standard checklist. Architects manage 3–5 projects at once using WhatsApp and printed sheets. Clients call constantly asking "what's the update?" — because there's no other way to know.
+You can also sign up with any new email + an 8+ character password — that creates a fresh session with whatever plan you pick.
 
-Architrack fixes that.
+## File map
 
----
+| File | Purpose |
+|---|---|
+| `index.html` | Landing / marketing page (public) |
+| `login.html` | Log in (public) — has demo creds + "Use demo credentials" button |
+| `signup.html` | Sign up (public) — pick Free or Pro plan |
+| `dashboard.html` | Main dashboard (after login) |
+| `projects.html` | All projects list |
+| `documents.html` | Documents library |
+| `clients.html` | Clients list |
+| `reports.html` | Reports (gated to Pro plan) |
+| `settings.html` | Profile / workspace / billing settings |
+| `styles.css` | All styles (shared) |
+| `auth.js` | Session management via localStorage (shared) |
+| `app.js` | All app logic — sidebar nav, modals, search, project switcher, etc. (shared) |
 
-## What It Does
+## How auth works
 
-Architrack is a **management and tracking tool** — not a government portal. Architects use it to prepare, organise, and track submissions. The actual submission still happens at the physical ministry. But everything before and after — the documents, the status, the client communication — lives in ApproTrack.
+1. `auth.js` exposes a small `window.ApproAuth` API: `attemptLogin`, `attemptSignup`, `getSession`, `clearSession`, `requireAuth`, `logout`.
+2. Successful login or signup writes the user object to `localStorage` under `approtrack_session`, then redirects to `dashboard.html`.
+3. Every protected page (`dashboard`, `projects`, `documents`, `clients`, `reports`, `settings`) calls `ApproAuth.requireAuth()` at the top of `<body>` — if no session, it redirects to `login.html`.
+4. The "Sign out" item in the profile dropdown calls `ApproAuth.clearSession()` and sends the user to `index.html`.
+5. If you visit `login.html` or `signup.html` while already logged in, you're auto-redirected to `dashboard.html`.
 
-| Step | Where it happens |
-|------|-----------------|
-| Create project & generate checklist | ApproTrack |
-| Prepare and check off required documents | ApproTrack |
-| Submit drawings to ministry | Physical / government portal |
-| Update approval status | ApproTrack |
-| Client views progress | ApproTrack (read-only portal) |
+## How navigation works
 
----
+Sidebar items are real `<a href="page.html">` links — no JavaScript routing tricks. The original `navigateTo(pageId)` function still exists in `app.js` but now does `window.location.href = ...`, so any internal call (project switcher, breadcrumb, "view all projects" etc.) navigates to the actual page.
 
-## Features
+## Running
 
-### Project Dashboard
-Create and manage all active approval projects in one place. Status tags, checklist progress bars, and recent activity — everything at a glance.
-
-### State-Specific Checklist Generator
-Select a state (Lagos, Abuja FCT, Benue, Rivers, Ogun, Kano) and get the exact document checklist required by that jurisdiction. Tick items off as you prepare them.
-
-### Approval Status Tracker
-Move projects through the pipeline manually:
-`Draft → Submitted → Under Review → Approved / Rejected`
-
-Each status change is logged with a timestamp in the activity timeline.
-
-### Notifications & Reminders
-Get alerted when documents are missing, when a status update is due, or when it's been too long since a ministry follow-up.
-
-### Client View Portal
-A read-only portal property owners can access to see their project's current status, timeline, and next steps — without needing to call their architect.
-
----
-
-## Tech Stack
-
-- **Frontend:** Vanilla HTML / CSS / JavaScript (single-file MVP)
-- **No backend dependency** at MVP stage — state is managed in-memory
-- **Fonts:** Syne (display) + DM Sans (body) via Google Fonts
-- **Future:** Node.js / Express backend, PostgreSQL, REST API, government portal integrations via API
-
----
-
-## Getting Started
-
-This is a single-file HTML prototype. No build step required.
+This is a static site — open `index.html` directly in a browser (`file://`) or serve the folder with any static server, e.g.:
 
 ```bash
-# Clone the repo
-git clone https://github.com/yourusername/approtrack.git
-
-# Open in browser
-open approtrack.html
+python3 -m http.server 8000
 ```
 
-Or just open `approtrack.html` directly in any modern browser.
+Then visit `http://localhost:8000/`.
 
----
-
-## Project Structure
-
-```
-approtrack/
-├── approtrack.html        # Full MVP — UI, logic, and styles in one file
-├── README.md
-└── docs/
-    └── mvp-document.html  # Product spec, user stories, roadmap
-```
-
----
-
-## State Coverage (MVP)
-
-| State | Checklist Items |
-|-------|----------------|
-| Lagos | 8 documents |
-| Abuja (FCT) | 7 documents |
-| Benue | 9 documents |
-| Rivers | 8 documents |
-| Ogun | 7 documents |
-| Kano | 7 documents |
-
-More states will be added in subsequent releases based on user research.
-
----
-
-## Roadmap
-
-| Phase | Timeline | Focus |
-|-------|----------|-------|
-| MVP | Month 1–2 | Dashboard, Checklist, Status Tracker |
-| Beta | Month 3 | 10–20 architects in Benue State |
-| v1.1 | Month 4 | Notifications, Client Portal improvements |
-| v1.2 | Month 5 | Expand to 10+ states |
-| Launch | Month 6 | Public release + freemium pricing |
-
-**Future:** Direct API integration with LASPPPA (Lagos), FCDA (Abuja), and other state ministry portals for real-time status syncing.
-
----
-
-## Target Users
-
-**Primary — Architects**
-Managing multiple concurrent approval projects. Currently using WhatsApp + paper to track progress. Needs speed, clarity, and a way to look professional to clients.
-
-**Secondary — Builders / Developers**
-Need visibility into approval timelines to sequence site work without costly idle delays.
-
-**Secondary — Property Owners / Clients**
-Want to know what's happening with their project without making weekly calls to their architect.
-
----
-
-## Business Model
-
-| Tier | Price | Projects |
-|------|-------|----------|
-| Free | ₦0 | Up to 2 active projects |
-| Pro | ₦15,000–₦18,000 / month | Unlimited + all features |
-
-Launch strategy: start fully free to build trust and gather testimonials, then introduce Pro tier at Month 3 for users who've seen value.
-
----
-
-## Contributing
-
-This project is in active MVP development. If you're a Nigerian architect, developer, or product person who wants to help shape it — open an issue or reach out directly.
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add your feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
----
-
-## License
-
-MIT License. See `LICENSE` for details.
-
----
-
-*Built for the Nigerian built environment. Designed to reduce the 60+ day average approval timeline.*
+> Note: `localStorage` works fine over `file://` in modern browsers, so you don't strictly need an HTTP server, but a server is recommended.
